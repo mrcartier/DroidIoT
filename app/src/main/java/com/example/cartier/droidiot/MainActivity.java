@@ -27,22 +27,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvError = (TextView)findViewById(R.id.error);
-
-        tvClock = (TextClock)findViewById(R.id.clock);
-        getTimeDate();
-
-        PeripheralManagerService service = new PeripheralManagerService();
-
-        try {
-            gpio = service.openGpio("BCM21");
-            gpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
-            tvError.setVisibility(View.GONE);
-            Toast.makeText(getApplicationContext(), "BCM21 OK", Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         offBtn = (Button)findViewById(R.id.offbutton);
         offBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +42,25 @@ public class MainActivity extends AppCompatActivity {
                 gpioHigh();
             }
         });
+
+        tvError = (TextView)findViewById(R.id.error);
+
+        tvClock = (TextClock)findViewById(R.id.clock);
+        getTimeDate();
+
+        PeripheralManagerService service = new PeripheralManagerService();
+
+        try {
+            gpio = service.openGpio("BCM21");
+            gpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
+            tvError.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "BCM21 OK", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            offBtn.setVisibility(View.GONE);
+            onBtn.setVisibility(View.GONE);
+            e.printStackTrace();
+        }
+
     }
 
     public void getTimeDate() {

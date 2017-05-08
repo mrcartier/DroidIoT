@@ -4,27 +4,93 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextClock;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.things.pio.Gpio;
+import com.google.android.things.pio.PeripheralManagerService;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextClock tvClock;
+    private TextView tvError;
+    private Button offBtn, onBtn;
+    private Gpio gpio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tvError = (TextView)findViewById(R.id.error);
+
         tvClock = (TextClock)findViewById(R.id.clock);
         getTimeDate();
-    }
 
+        PeripheralManagerService service = new PeripheralManagerService();
+
+        try {
+            gpio = service.openGpio("BCM21");
+            gpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
+            tvError.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), "BCM21 OK", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        offBtn = (Button)findViewById(R.id.offbutton);
+        offBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gpioLow();
+            }
+        });
+
+        onBtn = (Button)findViewById(R.id.onbutton);
+        onBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gpioHigh();
+            }
+        });
+    }
 
     public void getTimeDate() {
 
         tvClock.setFormat12Hour(null);
         tvClock.setFormat24Hour("MM/dd/yyyy hh:mm:ss a");
         //tvClock.setFormat24Hour("hh:mm:ss a  EEE MMM d");
+    }
+
+    public void gpioLow() {
+        try {
+            gpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void gpioHigh() {
+        try {
+            gpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_HIGH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void onStop() {
+        super.onStop();
+        try {
+            gpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
+            gpio.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

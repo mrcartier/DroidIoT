@@ -7,8 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.cartier.droidiot.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="com.example.cartier.droidiot.MainActivity">
 
     <TextClock
         android:id="@+id/clock"
@@ -16,8 +15,42 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="24sp"
-        android:layout_centerInParent="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"/>
         <!--android:format24Hour="MM/dd/yyyy hh:mm:ss a"-->
+
+    <TextView
+        android:id="@+id/btnname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@+id/offbutton"
+        android:text="BCM21"/>
+
+    <Button
+        android:id="@+id/offbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="OFF"/>
+
+    <Button
+        android:id="@+id/onbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@+id/offbutton"
+        android:text="ON"/>
+
+    <TextView
+        android:id="@+id/error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/offbutton"
+        android:text="RESTART DEVICE"
+        android:textColor="#FF0000"
+        android:textSize="35sp"/>
 
 
 </RelativeLayout>

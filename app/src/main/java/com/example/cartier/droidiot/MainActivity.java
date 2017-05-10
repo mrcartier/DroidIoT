@@ -60,17 +60,16 @@ public class MainActivity extends AppCompatActivity {
             onBtn.setVisibility(View.GONE);
             e.printStackTrace();
         }
-
     }
 
-    public void getTimeDate() {
+    protected void getTimeDate() {
 
         tvClock.setFormat12Hour(null);
         tvClock.setFormat24Hour("MM/dd/yyyy hh:mm:ss a");
         //tvClock.setFormat24Hour("hh:mm:ss a  EEE MMM d");
     }
 
-    public void gpioLow() {
+    protected void gpioLow() {
         try {
             gpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);
         } catch (IOException e) {
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void gpioHigh() {
+    protected void gpioHigh() {
         try {
             gpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_HIGH);
         } catch (IOException e) {
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onStop() {
+    protected void onStop() {
         super.onStop();
         try {
             gpio.setDirection(Gpio.DIRECTION_OUT_INITIALLY_LOW);

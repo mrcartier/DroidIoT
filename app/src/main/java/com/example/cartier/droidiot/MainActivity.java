@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextClock tvClock;
     private TextView tvError;
-    private Button offBtn, onBtn;
+    private Button offBtn, onBtn, shutdownBtn;
     private Gpio gpio;
 
     @Override
@@ -44,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         tvError = (TextView)findViewById(R.id.error);
+
+        shutdownBtn = (Button)findViewById(R.id.shutdown);
+        shutdownBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shutDown();
+            }
+        });
 
         tvClock = (TextClock)findViewById(R.id.clock);
         getTimeDate();
@@ -92,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
             gpio.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    protected void shutDown() {
+        try {
+            Runtime.getRuntime().exec("reboot -p");
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(), "UNABLE TO SHUTDOWN", Toast.LENGTH_LONG).show();
         }
     }
 
